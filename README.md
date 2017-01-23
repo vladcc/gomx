@@ -49,10 +49,10 @@ is automatically added to the list.
 
 Known issues: 
 
-1. Sometimes the video window does not resize properly when exiting fullscreen.
+1. The video window does not resize properly when exiting fullscreen.
 If that happens, go to fullscreen again and then go back. This should fix it.
 
-2. Somtimes the gui might crash, becoming unresponsive. 
+2. The gui might crash, becoming unresponsive. 
 In that case type in the terminal:
 
 sudo killall python
