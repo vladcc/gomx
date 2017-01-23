@@ -17,10 +17,10 @@ To use gomx you first have to install the python omx wrapper from the link below
 
 https://github.com/willprice/python-omxplayer-wrapper
 
-Then open a terminal and type
+Then open a terminal and type 
 
-chmod +x gomx_setup.sh
-sudo ./gomx_setup.sh
+1. chmod +x gomx_setup.sh 
+2. sudo ./gomx_setup.sh
 
 Now you can run any video with gomx [file name] from the command line, or do this:
 
