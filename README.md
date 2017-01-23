@@ -37,12 +37,12 @@ gomx supports all keyboard controls for omxplayer. Type omxplayer -k for the ful
 
 The following functionality is added to the gui:
 
-1. Double left click or w			  - fuscreen on/off
-2. Right click when full screen	- show/hide player controls
-3. Mouse wheel up					      - volume up
-4. Mouse wheel down				      - volume down
-5. Esc								            - fullscreen off/quit
-6. q							        	      - quit
+1. Double left click or w - fuscreen on/off
+2. Right click when full screen - show/hide player controls
+3. Mouse wheel up - volume up
+4. Mouse wheel down - volume down
+5. Esc - fullscreen off/quit
+6. q - quit
 
 If you want to run gomx with arguments, run gomx from the terminal like you would
 omxplayer. Note, however, that -o both (for audio output to both local and hdmi) 
