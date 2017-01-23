@@ -48,6 +48,7 @@ omxplayer. Note, however, that -o both (for audio output to both local and hdmi)
 is automatically added to the list.
 
 Known issues: 
+
 1. Sometimes the video window does not resize properly when exiting fullscreen.
 If that happens, go to fullscreen again and then go back. This should fix it.
 
