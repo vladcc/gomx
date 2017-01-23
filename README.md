@@ -21,7 +21,7 @@ Then open a terminal and type:
 
 sudo ./gomx_setup.sh
 
-Now you can run any video with gomx <file name> from the command line, or do this:
+Now you can run any video with gomx [file name] from the command line, or do this:
 
 1. Right click the video file
 2. Select Open With...
