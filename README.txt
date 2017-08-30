@@ -47,10 +47,10 @@ is automatically added.
 Known issues:
 
 1. The video window may not resize properly when exiting fullscreen.
-* Fix: Go to fullscreen and back again.
+Fix: Go to fullscreen and back again.
 
 2. The gui might crash becoming unresponsive.
-* Fix: Open the video file again. If that doesn't work kill gomx and omxplayer like so:
+Fix: Open the video file again. If that doesn't work kill gomx and omxplayer like so:
 
 sudo killall omxplayer.bin
 sudo killall gomx
@@ -59,5 +59,5 @@ If "killall gomx" doesn't do the trick try:
 sudo pkill gomx --signal SIGKILL
 
 3. The video window may not be properly aligned inside the GUI.
-* Fix: Change the value of PL_WIN_PAD inside the gomx script.
+Fix: Change the value of PL_WIN_PAD inside the gomx script.
 For me 48 works best. Another user reported he had to set it to 1.
