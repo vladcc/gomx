@@ -1,0 +1,2 @@
+v1.1
+added: stops previous running instances of gomx and omxplayer.bin on startup
