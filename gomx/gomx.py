@@ -18,6 +18,10 @@ PL_RESIZE = -1
 # video window padding in pixels
 # the window is moved PL_WIN_PAD pixels to the left and down
 # in order to fit exactly in the gui window
+#
+# Note: 48 appears to not be consistent on all systems.
+# You may need to set it to something else.
+#
 PL_WIN_PAD = 48
 
 # the title of the gui window
@@ -37,7 +41,7 @@ for proc in subprocess.check_output(["pgrep", MYNAME]).split('\n'):
 		if (int(proc) != MYPID):
 			os.system("killall " + OMXPL)
 			os.kill(int(proc), signal.SIGTERM)
-			
+
 # GLOBAL VARIABLES
 # global player command
 gpl_cmd = 0
@@ -79,21 +83,21 @@ def start_player():
 	"Start the player and loop waiting for commands"
 	global gpl_cmd, gis_player_alive, gis_progrs_clicked
 	global gwin_abs_x, gwin_abs_y, gframe_height, gframe_width
-	
+
 	if (gcurr_video == 0):
 		return
-	
+
 	video_path = gcurr_video
 	win_gui.title(TITLE + " - " + video_path)
 	player = OMXPlayer(video_path, args)
-	
+
 	# VIDEO TIME AND PROGRESS BAR
 	# set video duration
 	dur = player.duration()
 	mins = dur / 60
 	secs = dur % 60
 	l_duration.config(text='/ %02d:%02d' % (mins, secs))
-	
+
 	# progress bar binding functions
 	def s_progrs_clicked(event):
 		"Don't update slider when it's clicked"
@@ -105,14 +109,14 @@ def start_player():
 		global gis_progrs_clicked
 		player.set_position(s_progrs.get())
 		gis_progrs_clicked = False
-		
+
 	def s_progrs_update(event):
 		"Update elapsed time label on each increment"
 		pos = s_progrs.get()
 		mins = pos / 60
 		secs = pos % 60
 		l_time.config(text='%02d:%02d' % (mins, secs))
-		
+
 	# configure & bind the progress bar
 	s_progrs.config(to=dur-1, length=win_gui.winfo_width()/1.5, command=s_progrs_update)
 	s_progrs.bind('<ButtonPress-1>', s_progrs_clicked)
@@ -122,18 +126,18 @@ def start_player():
 	gis_player_alive = True
 	pl_resize()
 	# MAIN PLAYER LOOP
-	while gis_player_alive:		
-		if (gis_gui_running == True):		
+	while gis_player_alive:
+		if (gis_gui_running == True):
 			# see if window is moved
 			w_abs_x = win_gui.winfo_x()
 			w_abs_y = win_gui.winfo_y()
-			
+
 			if (gwin_abs_x != w_abs_x or gwin_abs_y != w_abs_y):
 				# update global coordinates and resize
 				gwin_abs_x = w_abs_x
 				gwin_abs_y = w_abs_y
 				pl_resize()
-			
+
 			if (gpl_cmd == PL_RESIZE):
 				# calculate new dimensions
 				pl_x1 = gwin_abs_x + PL_WIN_PAD
@@ -144,25 +148,25 @@ def start_player():
 				player.set_video_pos(pl_x1, pl_y1, pl_x2, pl_y2)
 				# zero out command
 				gpl_cmd = 0
-			
+
 			# get video position
 			pos = player.position()
 			# update progress bar
 			if (gis_progrs_clicked == False):
 				s_progrs.set(pos)
-				
+
 			# check if video is done and exit gracefully
 			if (int(dur) == int(pos)):
 				b_stop_press()
-		
+
 		if (gpl_cmd == EXIT):
 			gis_player_alive = False
-		
+
 		if (gpl_cmd != 0):
 			# do command
 			player.action(gpl_cmd)
 			gpl_cmd = 0
-		
+
 		sleep(0.1)
 	# /MAIN PLAYER LOOP
 # /PLAYER THREAD FUNCTION
@@ -181,11 +185,11 @@ def pl_exit():
 def pl_pause():
 	global gpl_cmd
 	gpl_cmd = PAUSE
-	
+
 def pl_resize():
 	global gpl_cmd
 	gpl_cmd = PL_RESIZE
-	
+
 def pl_decr_speed():
 	global gpl_cmd
 	gpl_cmd = DECREASE_SPEED
@@ -196,64 +200,64 @@ def pl_incr_speed():
 
 def pl_rewind():
 	global gpl_cmd
-	gpl_cmd = REWIND	
+	gpl_cmd = REWIND
 
 def pl_fast_fwd():
 	global gpl_cmd
 	gpl_cmd = FAST_FORWARD
-	
+
 def pl_show_info():
 	global gpl_cmd
 	gpl_cmd = SHOW_INFO
-	
+
 def pl_prev_aud_strm():
 	global gpl_cmd
 	gpl_cmd = PREVIOUS_AUDIO
-	
+
 def pl_next_aud_strm():
 	global gpl_cmd
 	gpl_cmd = NEXT_AUDIO
-	
+
 def pl_prev_chptr():
 	global gpl_cmd
 	gpl_cmd = PREVIOUS_CHAPTER
-	
+
 def pl_next_chptr():
 	global gpl_cmd
 	gpl_cmd = NEXT_CHAPTER
-	
+
 def pl_prev_sub():
 	global gpl_cmd
 	gpl_cmd = PREVIOUS_SUBTITLE
-	
+
 def pl_next_sub():
 	global gpl_cmd
 	gpl_cmd = NEXT_SUBTITLE
-	
+
 def pl_toggle_sub():
 	global gpl_cmd
 	gpl_cmd = TOGGLE_SUBTITLE
-	
+
 def pl_decr_sub_delay():
 	global gpl_cmd
 	gpl_cmd = DECREASE_SUBTITLE_DELAY
-	
+
 def pl_incr_sub_delay():
 	global gpl_cmd
 	gpl_cmd = INCREASE_SUBTITLE_DELAY
-	
+
 def pl_decr_vol():
 	global gpl_cmd
 	gpl_cmd = DECREASE_VOLUME
-	
+
 def pl_incr_vol():
 	global gpl_cmd
 	gpl_cmd = INCREASE_VOLUME
-	
+
 def pl_seek_back_small():
 	global gpl_cmd
 	gpl_cmd = SEEK_BACK_SMALL
-	
+
 def pl_seek_fwd_small():
 	global gpl_cmd
 	gpl_cmd = SEEK_FORWARD_SMALL
@@ -261,7 +265,7 @@ def pl_seek_fwd_small():
 def pl_seek_back_large():
 	global gpl_cmd
 	gpl_cmd = SEEK_BACK_LARGE
-	
+
 def pl_seek_fwd_large():
 	global gpl_cmd
 	gpl_cmd = SEEK_FORWARD_LARGE
@@ -269,14 +273,14 @@ def pl_seek_fwd_large():
 
 # GUI BINDS
 def frame_on_resize(event):
-	"Update video window size to fit it's gui frame"	
+	"Update video window size to fit it's gui frame"
 	global gpl_cmd
 	global gwin_abs_x, gwin_abs_y, gframe_height, gframe_width
 	global gis_full_scr
-	
+
 	if (gis_full_scr == True):
 		return
-	
+
 	# update global height and width
 	gframe_height = event.height
 	gframe_width = event.width
@@ -288,7 +292,7 @@ def full_screen():
 	global gpl_cmd
 	global gwin_abs_x, gwin_abs_y
 	global gframe_width, gframe_height
-	
+
 	if (gis_full_scr == False):
 		# set full screen
 		# full screen is done like this instead of
@@ -316,7 +320,7 @@ def gui_show_ctrl(event):
 	"Show the controls when fullscreened"
 	global gwin_abs_x, gwin_abs_y
 	global gframe_width, gframe_height
-		
+
 	if (gis_full_scr == True):
 		if (gui_show_ctrl.is_shown == False):
 			# show the controls by fiting the video
@@ -337,12 +341,12 @@ def gui_show_ctrl(event):
 			gui_show_ctrl.is_shown = False
 # static flag
 gui_show_ctrl.is_shown = False
-	
+
 def gui_vhide_on_minimize(event):
 	"Hide video on gui minimize event"
 	global gpl_cmd
 	gpl_cmd = HIDE_VIDEO
-	
+
 def gui_vshow_on_unminimize(event):
 	"Show vide when gui window is unminimized"
 	global gpl_cmd
@@ -355,7 +359,7 @@ def gui_kbd_fscr(event):
 def gui_kbd_play_pause(event):
 	"Get play/pause from the keyboard"
 	b_play_press()
-	
+
 def gui_kbd_stop(event):
 	"Get stop from keyboard"
 	b_stop_press()
@@ -377,20 +381,20 @@ def gui_kbd_decr_speed(event):
 
 def gui_kbd_incr_speed(event):
 	"Faster"
-	pl_incr_speed()	
+	pl_incr_speed()
 
 def gui_kbd_rewind(event):
 	"Start over"
 	pl_rewind()
-	
+
 def gui_kbd_fast_fwd(event):
 	"Fast forward"
 	pl_fast_fwd()
-	
+
 def gui_kbd_show_info(event):
 	"Show info"
 	pl_show_info()
-	
+
 def gui_kbd_prev_aud_st(event):
 	"Previous audio stream"
 	pl_prev_aud_strm()
@@ -406,39 +410,39 @@ def gui_kbd_prev_chptr(event):
 def gui_kbd_next_chptr(event):
 	"Go to next chapter"
 	pl_next_chptr()
-	
+
 def gui_kbd_prev_sub(event):
 	"Previous subtitles"
 	pl_prev_sub()
-	
+
 def gui_kbd_next_sub(event):
 	"Next subtitles"
 	pl_next_sub()
-	
+
 def gui_kbd_toggle_sub(event):
 	"Toggle subtitles"
 	pl_toggle_sub()
-	
+
 def gui_kbd_decr_sub_delay(event):
 	"Decrease subtitle delay"
 	pl_decr_sub_delay()
-	
+
 def gui_kbd_incr_sub_delay(event):
 	"Increase subtitle delay"
 	pl_incr_sub_delay()
-	
+
 def gui_kbd_decr_vol(event):
 	"Volume down"
 	pl_decr_vol()
-	
+
 def gui_kbd_incr_vol(event):
 	"Volume up"
 	pl_incr_vol()
-	
+
 def gui_kbd_seek_back_small(event):
 	"Go back slightly"
 	pl_seek_back_small()
-	
+
 def gui_kbd_seek_fwd_small(event):
 	"Go forward slightly"
 	pl_seek_fwd_small()
@@ -446,7 +450,7 @@ def gui_kbd_seek_fwd_small(event):
 def gui_kbd_seek_back_large(event):
 	"Go back a lot"
 	pl_seek_back_large()
-	
+
 def gui_kbd_seek_fwd_large(event):
 	"Go forward a lot"
 	pl_seek_fwd_large()
@@ -462,12 +466,12 @@ def b_stop_press():
 	"Stop player only"
 	pl_exit()
 	win_gui.title(TITLE)
-	
+
 def b_quit_press():
 	"Quit everything"
 	pl_exit()
 	win_gui.quit()
-	
+
 def mouse_wheel(event):
 	if event.num == 5 or event.delta == -120:
 		pl_decr_vol()
