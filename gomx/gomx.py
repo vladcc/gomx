@@ -1,6 +1,9 @@
 #!/usr/bin/python
 
 import sys
+import os
+import subprocess
+import signal
 import threading
 import tkMessageBox
 from Tkinter import *
@@ -18,10 +21,23 @@ PL_RESIZE = -1
 PL_WIN_PAD = 48
 
 # the title of the gui window
-VERSION = 1.0
+VERSION = 1.1
 TITLE = "%s%.1f" % ("gomx v", VERSION)
+
+# this script's name and pid
+MYNAME = os.path.basename(__file__)
+MYPID = os.getpid()
+# player image name
+OMXPL = "omxplayer.bin"
 # /CONSTANTS
 
+# stop previous instances
+for proc in subprocess.check_output(["pgrep", MYNAME]).split('\n'):
+	if (proc != ""):
+		if (int(proc) != MYPID):
+			os.system("killall " + OMXPL)
+			os.kill(int(proc), signal.SIGTERM)
+			
 # GLOBAL VARIABLES
 # global player command
 gpl_cmd = 0
@@ -147,7 +163,7 @@ def start_player():
 			player.action(gpl_cmd)
 			gpl_cmd = 0
 		
-		sleep(0.2)
+		sleep(0.1)
 	# /MAIN PLAYER LOOP
 # /PLAYER THREAD FUNCTION
 
