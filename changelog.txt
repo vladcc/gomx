@@ -1,5 +1,6 @@
 v1.1
 changed: registers a callback with tk, uses only one thread
+changed: default aspect is letterbox
 added: stops previous running instances of gomx and omxplayer.bin on startup
 added: ctrl-c, ctrl-z handlers
 added: safety checks
