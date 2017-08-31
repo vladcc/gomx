@@ -94,14 +94,15 @@ if (len(sys.argv) > 1):
 args = ['-o', 'both']
 args.extend(sys.argv)
 
+# PLAYER ROUTINES
 def start_player():
 	"Launch the player, get video duration, set progress bar to 0"
 	global gplayer, gcurr_video, gis_player_alive
 	global gdur, gmins, gsecs
-	
+
 	if (gcurr_video == 0):
 		return False
-	
+
 	video_path = gcurr_video
 	win_gui.title(TITLE + " - " + video_path)
 	gplayer = OMXPlayer(video_path, args)
@@ -120,7 +121,7 @@ def update_player():
 	global gplayer, gcurr_video, gis_player_alive
 	global gwin_abs_x, gwin_abs_y
 	global gdur, gmins, gsecs
-	
+
 	if (gis_player_alive):
 		# progress bar binding functions
 		def s_progrs_clicked(event):
@@ -158,7 +159,7 @@ def update_player():
 				gwin_abs_x = w_abs_x
 				gwin_abs_y = w_abs_y
 				pl_resize()
-			
+
 			pos = s_progrs.get()
 			# get video position
 			if (int(pos) < int(gdur)):
@@ -166,19 +167,20 @@ def update_player():
 					pos = gplayer.position()
 				except:
 					gis_player_alive = False
-				
+
 			# update progress bar
 			if (gis_progrs_clicked == False):
 				s_progrs.set(pos)
-				
+
 			# exit if video is done
 			if (int(gdur) <= int(pos)):
 				b_stop_press()
-				
+
 		win_gui.after(CALLBACKT, update_player)
 	return
+# /PLAYER ROUTINES
 
-# PLAYER INTERFACE FUNCTIONS
+# PLAYER INTERFACE
 def player_do(act):
 	if (gis_player_alive):
 		gplayer.action(act)
@@ -191,7 +193,7 @@ def pl_exit():
 	if (gis_full_scr):
 		full_screen()
 	s_progrs.config(state="disabled")
-	
+
 def pl_pause():
 	player_do(PAUSE)
 
@@ -266,14 +268,14 @@ def pl_seek_back_large():
 
 def pl_seek_fwd_large():
 	player_do(SEEK_FORWARD_LARGE)
-# /PLAYER INTERFACE FUNCTIONS
+# /PLAYER INTERFACE
 
-# GUI BINDS
+# SCREEN HANDLERS
 def frame_on_resize(event):
 	"Update video window size to fit the gui frame"
 	global gwin_abs_x, gwin_abs_y, gframe_height, gframe_width
 	global gis_full_scr
-	
+
 	# update global height and width
 	gframe_height = event.height
 	gframe_width = event.width
@@ -281,6 +283,7 @@ def frame_on_resize(event):
 	return
 
 def show_ctrls(bool_show):
+	"Hide/show control frames"
 	if (bool_show):
 		video_frame.pack_forget()
 		video_frame.pack(side="top", fill="both", expand=True)
@@ -306,7 +309,7 @@ def full_screen():
 		# because omxplayer always fits the full size of the screen
 		# while the gui system may not
 		win_gui.attributes("-fullscreen", True)
-		show_ctrls(False)	
+		show_ctrls(False)
 		gwin_abs_x = 0
 		gwin_abs_y = 0
 		gframe_width = 0
@@ -325,7 +328,9 @@ def full_screen():
 		pl_resize()
 		gis_full_scr = False
 	return
-	
+# /SCREEN HANDLERS
+
+# GUI BINDS
 def gui_show_ctrl(event):
 	"Show the controls when fullscreened"
 	global gwin_abs_x, gwin_abs_y
