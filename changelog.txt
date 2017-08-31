@@ -1,3 +1,5 @@
 v1.1
-added: Stops previous running instances of gomx and omxplayer.bin on startup.
-changed: Player loop now sleeps for 0.1 sec instead of 0.2 sec.
+changed: registers a callback with tk, uses only one thread
+added: stops previous running instances of gomx and omxplayer.bin on startup
+added: ctrl-c, ctrl-z handlers
+added: safety checks
