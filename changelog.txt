@@ -3,3 +3,4 @@ changed: registers a callback with tk, uses only one thread
 added: stops previous running instances of gomx and omxplayer.bin on startup
 added: ctrl-c, ctrl-z handlers
 added: safety checks
+added: a Stop button
