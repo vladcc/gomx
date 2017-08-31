@@ -3,7 +3,6 @@
 import os
 import subprocess
 import signal
-import math
 import tkMessageBox
 from Tkinter import *
 from omxplayer import OMXPlayer
