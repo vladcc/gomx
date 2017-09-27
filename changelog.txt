@@ -5,3 +5,7 @@ added: stops previous running instances of gomx and omxplayer.bin on startup
 added: ctrl-c, ctrl-z handlers
 added: safety checks
 added: a Stop button
+
+v1.2
+added: try-except tkinter import for python2 and python3
+fixed: up down arrows now jump time properly
