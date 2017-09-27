@@ -1,16 +1,25 @@
 #!/usr/bin/python
 
+# do not change to #!/usr/bin/env python
+# because the process name will change
+
 import os
+import sys
 import subprocess
 import signal
-import tkMessageBox
-from Tkinter import *
-from omxplayer import OMXPlayer
+from omxplayer.player import OMXPlayer
 from omxplayer.keys import *
+
+try:
+	# Python2
+	import Tkinter as tk
+except ImportError:
+	# Python3
+	import tkinter as tk
 
 # handle keyboard interrupts
 def signal_handler(signal, frame):
-	print "Bye"
+	print("Bye")
 	b_quit_press()
 
 signal.signal(signal.SIGINT, signal_handler)
@@ -30,7 +39,7 @@ PL_RESIZE = -1
 PL_WIN_PAD = 48
 
 # the title of the gui window
-VERSION = 1.1
+VERSION = 1.2
 TITLE = "%s%.1f" % ("gomx v", VERSION)
 
 # this script's name and pid
@@ -497,7 +506,7 @@ def mouse_wheel(event):
 # /GUI BINDS
 
 # GUI
-win_gui = Tk()
+win_gui = tk.Tk()
 win_gui.title(TITLE)
 # default size
 wg_w = 640
@@ -529,8 +538,8 @@ win_gui.bind('+', gui_kbd_incr_vol)
 win_gui.bind('=', gui_kbd_incr_vol)
 win_gui.bind('<Left>', gui_kbd_seek_back_small)
 win_gui.bind('<Right>', gui_kbd_seek_fwd_small)
-win_gui.bind('<Up>', gui_kbd_seek_back_large)
-win_gui.bind('<Down>', gui_kbd_seek_fwd_large)
+win_gui.bind('<Up>', gui_kbd_seek_fwd_large)
+win_gui.bind('<Down>', gui_kbd_seek_back_large)
 win_gui.bind('t', gui_kbd_stop)
 win_gui.bind('<Map>', gui_vshow_on_unminimize)
 win_gui.bind('<Unmap>', gui_vhide_on_minimize)
@@ -542,35 +551,35 @@ win_gui.bind("<Button-4>", mouse_wheel)
 win_gui.bind("<Button-5>", mouse_wheel)
 
 # the frame holding the video window
-video_frame = Frame(win_gui, bg="black")
+video_frame = tk.Frame(win_gui, bg="black")
 video_frame.pack(side="top", fill="both", expand=True)
 video_frame.bind("<Configure>", frame_on_resize)
 video_frame.bind("<Double-Button-1>", gui_kbd_fscr)
 
 # the frame holding the time and progress bar
-time_frame = Frame(win_gui)
+time_frame = tk.Frame(win_gui)
 time_frame.pack(side="top")
 
 # the progress bar
-s_progrs = Scale(time_frame, from_=0, to=0, orient="horizontal", showvalue=False)
+s_progrs = tk.Scale(time_frame, from_=0, to=0, orient="horizontal", showvalue=False)
 s_progrs.pack(side="left")
 
-l_duration = Label(time_frame, text="")
+l_duration = tk.Label(time_frame, text="")
 l_duration.pack(side="right")
-l_time = Label(time_frame, text="00:00")
+l_time = tk.Label(time_frame, text="00:00")
 l_time.pack(side="right")
 
 # the frame holding the control buttons
-ctrl_frame = Frame(win_gui)
+ctrl_frame = tk.Frame(win_gui)
 ctrl_frame.pack(side="bottom")
 
-b_vol_down = Button(ctrl_frame, text="Vol. -", command=pl_decr_vol)
+b_vol_down = tk.Button(ctrl_frame, text="Vol. -", command=pl_decr_vol)
 b_vol_down.pack(side="left")
-b_vol_up = Button(ctrl_frame, text="Vol. +", command=pl_incr_vol)
+b_vol_up = tk.Button(ctrl_frame, text="Vol. +", command=pl_incr_vol)
 b_vol_up.pack(side="left")
-b_play = Button(ctrl_frame, text="Play / Pause", command=b_play_press)
+b_play = tk.Button(ctrl_frame, text="Play / Pause", command=b_play_press)
 b_play.pack(side="left")
-b_stop = Button(ctrl_frame, text="Stop", command=b_stop_press)
+b_stop = tk.Button(ctrl_frame, text="Stop", command=b_stop_press)
 b_stop.pack(side="left")
 
 # register what to do when 'x' is clicked
